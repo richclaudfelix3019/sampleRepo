@@ -148,6 +148,12 @@ testRunner.testCase.setPropertyValue("shipCode",shipCode);</script>
       <script/>
     </con:config>
   </con:testStep>
+  <con:testStep type="groovy" name="Groovy Script 3" id="a853d236-8fe2-43b9-a8c1-972d650f2b9c">
+    <con:settings/>
+    <con:config>
+      <script/>
+    </con:config>
+  </con:testStep>
   <con:properties>
     <con:property>
       <con:name>brandCode</con:name>
