@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="b5fd9215-c619-4af7-b75b-8557497f486b" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="Test Case 1" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="b5fd9215-c619-4af7-b75b-8557497f486bfileName">Test-Case-1</con:setting>
+  </con:settings>
+  <con:testStep type="restrequest" name="Cruise Search" id="3846d28e-0034-4a22-8ab9-70f0fc7ddb46">
+    <con:settings/>
+    <con:config service="Cruise Search" resourcePath="/vacation/v1/cruise-search" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:restRequest name="Cruise Search" id="3564feaf-53ad-4428-a324-a00f8f01a5e7" mediaType="application/json" postQueryString="false">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
+        <con:endpoint>https://partners.tst.vps.rccl-it.cruises/vps-zeta</con:endpoint>
+        <con:request>{
+	"header": {
+		"application": "espresso_cruisingpower.com",
+		"language": "US"
+	},
+	"criteria": {
+		"office": "MIA",
+		"country": "USA",
+		"currency": "USD",
+		"channel": "ES",
+		"bookingType": "FIT",
+		"cruiseType": {
+			"value": [
+				"CO",
+				"CT"
+			]
+		},
+		"brand": {
+			"value": [
+				"C",
+				"R"
+			]
+		},
+		"sailingDate": {
+		},
+		"occupancy": {
+			"adult": "2"
+		}
+	},
+	"qualifiers": {
+		"promotionType": {
+			"value": [
+			]
+		},
+		"residentType": [
+		],
+		"airType": [
+			{
+				"gateway": [
+					"C/O",
+					"C/O"
+				]
+			}
+		],
+		"priceScope": "REQUESTED_AVAILABLE",
+		"searchScope": "ALL",
+		"qualifierScope": "PRICE_ONLY"
+	},
+	"resultsPreference": {
+		"includeFacets": "false",
+		"includeResults": "true",
+		"sortBy": "SAILDATE",
+		"sortOrder": "ASCENDING",
+		"pagination": {
+			"count": "10",
+			"offset": "0"
+		},
+		"strictSearch": false
+	}
+}</con:request>
+        <con:originalUri>https://tst.vps.rccl-it.cruises/vps-zeta/vacation/v1/cruise-search</con:originalUri>
+        <con:assertion type="Valid HTTP Status Codes" id="e08c1895-bc06-4466-b932-96ea9644ab8a" name="Valid HTTP Status Codes">
+          <con:settings/>
+          <con:configuration>
+            <codes>200</codes>
+          </con:configuration>
+        </con:assertion>
+        <con:credentials>
+          <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:parameters/>
+      </con:restRequest>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="groovy" name="Groovy Script" id="1d80c48a-4e73-41d3-92c0-71fd5137045c">
+    <con:settings/>
+    <con:config>
+      <script>def brandCode = context.expand( '${Cruise Search#Request#$[\'criteria\'][\'brand\'][\'value\'][0]}' )
+log.info(brandCode)
+testRunner.testCase.setPropertyValue("brandCode",brandCode);
+
+def sailDate = context.expand( '${Cruise Search#Response#$[\'resultsBySailing\'][\'sailingSummaryWithClassLevelPricing\'][0][\'sailingRef\'][\'saildate\']}' )
+log.info(sailDate)
+testRunner.testCase.setPropertyValue("sailDate",sailDate);
+
+def packageCode = context.expand( '${Cruise Search#Response#$[\'resultsBySailing\'][\'sailingSummaryWithClassLevelPricing\'][0][\'sailingRef\'][\'package\']}' )
+log.info(packageCode)
+testRunner.testCase.setPropertyValue("packageCode",packageCode);
+
+def shipCode = packageCode.substring(0,2)
+log.info(shipCode)
+testRunner.testCase.setPropertyValue("shipCode",shipCode);</script>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="restrequest" name="Catalog" id="12ae759d-e282-4987-b401-91c1b7bd83b3">
+    <con:settings/>
+    <con:config service="Catalog" resourcePath="/catalog/v1/sailing-package" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:restRequest name="Catalog" id="bb8b2d31-eafa-4db0-ae1e-2dae922feceb" mediaType="application/json">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;con:entry key="x-api-key" value="${#Project#AppKey}" xmlns:con="http://eviware.com/soapui/config"/></con:setting>
+        </con:settings>
+        <con:request/>
+        <con:originalUri>https://partners.tst.vps.rccl-it.cruises/vps-zeta/catalog/v1/sailing-package</con:originalUri>
+        <con:assertion type="Valid HTTP Status Codes" id="63c583a8-c83f-4549-a10e-0a68e84be378" name="Valid HTTP Status Codes">
+          <con:settings/>
+          <con:configuration>
+            <codes>200</codes>
+          </con:configuration>
+        </con:assertion>
+        <con:credentials>
+          <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:parameters>
+          <con:entry key="shipCodes" value="${#TestCase#shipCode}"/>
+          <con:entry key="includeTourPackages" value="true"/>
+          <con:entry key="fromSailDate" value="${#TestCase#sailDate}"/>
+          <con:entry key="brandCode" value="${#TestCase#brandCode}"/>
+        </con:parameters>
+        <con:parameterOrder>
+          <con:entry>brandCode</con:entry>
+          <con:entry>shipCodes</con:entry>
+          <con:entry>fromSailDate</con:entry>
+          <con:entry>includeTourPackages</con:entry>
+        </con:parameterOrder>
+      </con:restRequest>
+    </con:config>
+  </con:testStep>
+  <con:properties>
+    <con:property>
+      <con:name>brandCode</con:name>
+      <con:value>C</con:value>
+    </con:property>
+    <con:property>
+      <con:name>sailDate</con:name>
+      <con:value>2024-01-10</con:value>
+    </con:property>
+    <con:property>
+      <con:name>packageCode</con:name>
+      <con:value>ALTSTIP2</con:value>
+    </con:property>
+    <con:property>
+      <con:name>shipCode</con:name>
+      <con:value>AL</con:value>
+    </con:property>
+  </con:properties>
+  <con:reportParameters/>
+</con:testCase>

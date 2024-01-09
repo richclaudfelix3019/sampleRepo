@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:resource name="sailing-package" path="/catalog/v1/sailing-package" id="fd8cc558-6e28-49cd-ba52-f1c79816e5e9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="fd8cc558-6e28-49cd-ba52-f1c79816e5e9fileName">sailing-package</con:setting>
+  </con:settings>
+  <con:parameters/>
+  <con:method name="Method 1" id="447700fd-6baf-4755-bca8-5e775c072649" method="GET">
+    <con:settings/>
+    <con:parameters>
+      <con:parameter required="true">
+        <con:name>brandCode</con:name>
+        <con:value/>
+        <con:style>QUERY</con:style>
+        <con:default/>
+      </con:parameter>
+      <con:parameter required="true">
+        <con:name>shipCodes</con:name>
+        <con:value/>
+        <con:style>QUERY</con:style>
+        <con:default/>
+      </con:parameter>
+      <con:parameter required="true">
+        <con:name>fromSailDate</con:name>
+        <con:value/>
+        <con:style>QUERY</con:style>
+        <con:default/>
+      </con:parameter>
+      <con:parameter required="true">
+        <con:name>includeTourPackages</con:name>
+        <con:value/>
+        <con:style>QUERY</con:style>
+        <con:default/>
+      </con:parameter>
+    </con:parameters>
+    <con:request name="Request 1" id="bb8b2d31-eafa-4db0-ae1e-2dae922feceb" mediaType="application/json">
+      <con:settings>
+        <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment>&lt;con:entry key="x-api-key" value="${#Project#AppKey}" xmlns:con="http://eviware.com/soapui/config"/>&lt;con:entry key="accept" value="*/*" xmlns:con="http://eviware.com/soapui/config"/>&lt;/xml-fragment></con:setting>
+      </con:settings>
+      <con:request/>
+      <con:originalUri>https://partners.tst.vps.rccl-it.cruises/vps-zeta/catalog/v1/sailing-package</con:originalUri>
+      <con:credentials>
+        <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+        <con:authType>No Authorization</con:authType>
+      </con:credentials>
+      <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+      <con:parameters>
+        <con:entry key="shipCodes" value="RD"/>
+        <con:entry key="includeTourPackages" value="true"/>
+        <con:entry key="fromSailDate" value="2024-03-01"/>
+        <con:entry key="brandCode" value="R"/>
+      </con:parameters>
+      <con:parameterOrder>
+        <con:entry>brandCode</con:entry>
+        <con:entry>shipCodes</con:entry>
+        <con:entry>fromSailDate</con:entry>
+        <con:entry>includeTourPackages</con:entry>
+      </con:parameterOrder>
+    </con:request>
+  </con:method>
+</con:resource>
